@@ -1,0 +1,24 @@
+{
+  "version": "1.0.0-*",
+  "description": "GenerateSimplePdfFile Console Application",
+  "authors": [ "Minh Tam" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+
+  "compilationOptions": {
+    "emitEntryPoint": true
+  },
+
+  "dependencies": {
+    "iTextSharp": "5.5.9"
+  },
+
+  "commands": {
+    "GenerateSimplePdfFile": "GenerateSimplePdfFile"
+  },
+
+  "frameworks": {
+    "dnx451": { }   
+  }
+}
