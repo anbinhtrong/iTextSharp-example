@@ -11,7 +11,7 @@
   },
 
   "dependencies": {
-    "iTextSharp": "5.5.9"
+    "iTextSharp": "5.5.11"
   },
 
   "commands": {

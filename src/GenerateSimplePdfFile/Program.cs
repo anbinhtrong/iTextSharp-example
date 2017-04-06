@@ -3,8 +3,6 @@ using iTextSharp.text.pdf;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace GenerateSimplePdfFile
 {
@@ -14,14 +12,67 @@ namespace GenerateSimplePdfFile
         {
             //CreateSimplePdf();
             //DefinePageWidth();
-            //SetPageMargin();
+            SetPageMargin();
+            SetPadding();
             //AlignmentAlign();
             //SetMetaInformation();
             //CreateMultiPage();
             //CreateFromExistingPdf();
             //AddWatermark();
-            CreateMergedPDF("MergeFile.pdf");
+            //CreateMergedPDF("MergeFile.pdf");
         }
+
+        private static void SetPadding()
+        {
+            float widthval = 25;
+            var cellContent = "Check Cell Padding for iText PDF Table";
+            try
+            {
+                var iTextCreateTable = new Document();
+                PdfWriter.GetInstance(iTextCreateTable, new FileStream("iText_Cell_Padding_Example.pdf", FileMode.Create, FileAccess.Write, FileShare.None));
+                iTextCreateTable.Open();
+                var myFirstTable = new PdfPTable(3);
+                var tableCell = new PdfPCell(new Phrase("Cell 1" + cellContent))
+                {
+                    Padding = widthval
+                };
+                /* Padding Set in All Sides */
+                myFirstTable.AddCell(tableCell);
+                tableCell = new PdfPCell(new Phrase("Cell 2" + cellContent))
+                {
+                    PaddingLeft = widthval
+                };
+                /* Left Padding Only */
+                myFirstTable.AddCell(tableCell);
+                tableCell = new PdfPCell(new Phrase("Cell 3" + cellContent))
+                {
+                    PaddingRight = widthval
+                };
+                /* Right Padding Only */
+                myFirstTable.AddCell(tableCell);
+                tableCell = new PdfPCell(new Phrase("Cell 4" + cellContent))
+                {
+                    PaddingTop = widthval
+                };
+                /* Top Padding Only */
+                myFirstTable.AddCell(tableCell);
+                tableCell = new PdfPCell(new Phrase("Cell 5" + cellContent))
+                {
+                    PaddingBottom = widthval
+                };
+                /* Bottom Padding Only */
+                myFirstTable.AddCell(tableCell);
+                tableCell = new PdfPCell(new Phrase("Cell 6" + cellContent));
+                myFirstTable.AddCell(tableCell); /* No Padding Set */
+                iTextCreateTable.Add(myFirstTable);
+                iTextCreateTable.Close();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+        }
+
         /// <summary>
         /// 6 steps to define a new simple pdf
         /// </summary>
@@ -50,7 +101,7 @@ namespace GenerateSimplePdfFile
         /// </summary>
         static void SetPageMargin()
         {
-            var fs = new FileStream("Abc.pdf", FileMode.Create, FileAccess.Write, FileShare.None);
+            var fs = new FileStream("set-page-margin.pdf", FileMode.Create, FileAccess.Write, FileShare.None);
             var rec = new Rectangle(PageSize.A4);
             var doc = new Document(rec, 36, 72, 108, 180);
             var pdfWriter = PdfWriter.GetInstance(doc, fs);
