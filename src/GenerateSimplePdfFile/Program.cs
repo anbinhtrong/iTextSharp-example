@@ -3,6 +3,7 @@ using iTextSharp.text.pdf;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 
 namespace GenerateSimplePdfFile
 {
@@ -12,8 +13,12 @@ namespace GenerateSimplePdfFile
         {
             //CreateSimplePdf();
             //DefinePageWidth();
-            SetPageMargin();
-            SetPadding();
+            //SetPageMargin();
+            //SetPadding();
+
+            //UsingStandardFont();
+            //GetFontExample();
+            EmbededFont();
             //AlignmentAlign();
             //SetMetaInformation();
             //CreateMultiPage();
@@ -21,6 +26,61 @@ namespace GenerateSimplePdfFile
             //AddWatermark();
             //CreateMergedPDF("MergeFile.pdf");
         }
+        #region Fonts
+        private static void UsingStandardFont()
+        {
+            var fs = new FileStream("standard-font.pdf", FileMode.Create, FileAccess.Write, FileShare.None);
+            var doc = new Document();
+            var pdfWriter = PdfWriter.GetInstance(doc, fs);
+            doc.Open();
+
+            doc.Add(new Paragraph("Default font: abcdefghijklmnopqrstuvwxyz"));
+
+            var helveticaFont = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.WINANSI, false);
+            var helveticaFontStyle = new Font(helveticaFont, 12, Font.NORMAL, BaseColor.BLUE);
+            doc.Add(new Paragraph("HELVETICA, 12pt, Normal, blue: abcdefghijklmnopqrstuvwxyz", helveticaFontStyle));
+
+            //use Times Roman font
+            var bfTimes = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
+
+            var times = new Font(bfTimes, 12, Font.ITALIC, BaseColor.RED);
+            doc.Add(new Paragraph("TIMES_ROMAN, 12pt, Italic, Red: abcdefghijklmnopqrstuvwxyz", times));
+            doc.Close();
+        }
+
+        private static void GetFontExample()
+        {
+            var fs = new FileStream("get-font.pdf", FileMode.Create, FileAccess.Write, FileShare.None);
+            var doc = new Document();
+            var pdfWriter = PdfWriter.GetInstance(doc, fs);
+            doc.Open();
+            //list all fonts in the system
+            var totalfonts = FontFactory.RegisterDirectory("C:\\WINDOWS\\Fonts");
+            var sb = new StringBuilder();
+            foreach (var fontname in FontFactory.RegisteredFonts)
+            {
+                sb.Append(fontname + "\n");
+            }
+            doc.Add(new Paragraph("All Fonts:\n" + sb));
+            var arial = FontFactory.GetFont("Arial", 28, BaseColor.GRAY);
+            doc.Add(new Paragraph("Arial, 28pt, GRAY: abcdefghijklmnopqrstuvwxyz", arial));
+            doc.Close();
+        }
+
+        private static void EmbededFont()
+        {
+            var fs = new FileStream("embeded_font-no-embed.pdf", FileMode.Create, FileAccess.Write, FileShare.None);
+            var doc = new Document();
+            var pdfWriter = PdfWriter.GetInstance(doc, fs);
+            doc.Open();
+            //var path = new DirectoryInfo("");
+            var baseFont = BaseFont.CreateFont("fonts/vnibaybuom.ttf", BaseFont.CP1252, false);
+            //baseFont.Subset = true;
+            var baybuom = new Font(baseFont, 12);
+            doc.Add(new Paragraph("Vni-BayBuom, 12pt, Black: abcdefghijklmnopqrstuvwxyz", baybuom));
+            doc.Close();
+        }
+        #endregion
 
         private static void SetPadding()
         {
@@ -120,8 +180,12 @@ namespace GenerateSimplePdfFile
             var doc = new Document(rec, 36, 72, 108, 180);
             var pdfWriter = PdfWriter.GetInstance(doc, fs);
             doc.Open();
-            var paragraph = new Paragraph("Why do our headaches persist after we take a one-cent aspirin but disappear when we take a fifty-cent aspirin? Why do we splurge on a lavish meal but cut coupons to save twenty-five cents on a can of soup?");
-            paragraph.Alignment = Element.ALIGN_JUSTIFIED;
+            var paragraph =
+                new Paragraph(
+                    "Why do our headaches persist after we take a one-cent aspirin but disappear when we take a fifty-cent aspirin? Why do we splurge on a lavish meal but cut coupons to save twenty-five cents on a can of soup?")
+                {
+                    Alignment = Element.ALIGN_JUSTIFIED
+                };
             doc.Add(paragraph);
             paragraph = new Paragraph("When it comes to making decisions in our lives, we think we're making smart, rational choices. But are we?");
             doc.Add(paragraph);
