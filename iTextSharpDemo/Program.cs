@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace GenerateSimplePdfFile
+namespace iTextSharpDemo
 {
-    public class Program
+    class Program
     {
         public static void Main(string[] args)
         {
@@ -203,7 +203,7 @@ namespace GenerateSimplePdfFile
             var fs = new FileStream("Abc.pdf", FileMode.Create, FileAccess.Write, FileShare.None);
             var rec = new Rectangle(PageSize.A4);
             var doc = new Document(rec, 36, 72, 108, 180);
-            
+
 
             var pdfWriter = PdfWriter.GetInstance(doc, fs);
             //add after creating pdfWriter
@@ -236,7 +236,7 @@ namespace GenerateSimplePdfFile
         static void CreateFromExistingPdf()
         {
             CreateSimplePdf();
-            
+
             PdfReader reader = new PdfReader("Abc.pdf");
             var fs = new FileStream("Copy.pdf", FileMode.Create, FileAccess.Write, FileShare.None);
             using (PdfStamper stamper = new PdfStamper(reader, fs)) { }
@@ -296,7 +296,7 @@ namespace GenerateSimplePdfFile
                 {
                     "Abc.pdf",
                     "Copy.pdf"
-                };                
+                };
                 int i = 1;
                 foreach (string file in files)
                 {
